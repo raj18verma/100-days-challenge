@@ -1,44 +1,33 @@
-// Question Link:- https://www.codingninjas.com/studio/problems/all-root-to-leaf-paths-in-binary-tree._983599?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf&leftPanelTabValue=SUBMISSION
+// Question Link:- https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/
 
-/********************************************************************
-
-    Following is the Binary Tree node structure:
-
-    class BinaryTreeNode {
-        public :
-        int data;
-        BinaryTreeNode<T> *left;
-        BinaryTreeNode<T> *right;
-
-        BinaryTreeNode(T data) {
-            this -> data = data;
-            left = NULL;
-            right = NULL;
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == NULL || root == p || root == q) {
+            return root;
         }
-    };
-    
-********************************************************************/
-void solve(BinaryTreeNode<int> *root, vector<string> &ans, string res) {
-    if (!root)
-        return;
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
 
+        //result
+        if(left == NULL) {
+            return right;
+        }
+        else if(right == NULL) {
+            return left;
+        }
+        else { 
+            return root;
+        }
 
-    if (!root->left&& !root->right) {
-      res+=to_string(root->data);
-        ans.push_back(res);
-        return;
     }
-  res+=to_string(root->data)+" ";
-   solve(root->left, ans, res);
-   solve(root->right, ans, res);
-
-}
-
-vector<string> allRootToLeaf(BinaryTreeNode<int> *root) {
-    vector<string> ans;
-    if (!root)
-   { return ans;
-   }
-    solve(root, ans, "");
-    return ans;
-}
+};
